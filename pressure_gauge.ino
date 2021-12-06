@@ -348,8 +348,6 @@ void receivePID(unsigned char (& receive_buffer)[8])
 
 void loop()
 {
-  // put your main code here, to run repeatedly:
-
   // ********** start of fast sequence ********** //
   fastTime = millis();  // record time sequence is entered, this is used to delay read frequency
   if(fastTime - fast_historyTime > fastDelay) {
