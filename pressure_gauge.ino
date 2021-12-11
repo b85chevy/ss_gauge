@@ -366,7 +366,7 @@ void loop()
     // convert to psi
     boostpressure_psi = (3.7529 * boostpressure_voltage) - 1.8765;
     // scale sensor value to gauge
-    boostpressureScaled = round(float(boostpressure_psi) / (8.0/234.0));  // psi range is 0 to 15, gauge range is 0 to 8 or 234 degrees
+    boostpressureScaled = round(float(boostpressure_psi) / (8.0/234.0));  // psi range is 0 to 15, gauge range is 0 to 8 or 234 increments
     if (boostpressureScaled < 0) {
       boostpressureScaled = 0;
       }
