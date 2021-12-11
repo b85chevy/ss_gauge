@@ -1,7 +1,7 @@
 // ***************************************** //
-// Chevrolet SS Sedan Gauge Cluster
-// Revision -
-// November 2, 2021
+// 2017 Chevrolet SS Sedan Gauge Cluster
+// Revision A
+// December 6, 2021
 // ***************************************** //
 
 #include <EEPROM.h>
@@ -61,8 +61,8 @@ unsigned char numPID = 0;
 unsigned long sendTime = 0;                     // last time the sequence was entered
 unsigned long send_historyTime = 0;             // previous time the sequence was entered
 unsigned long sendDelay = 100;                  // delay between send PID
-unsigned long receiveTime = 0;                  // last time the sequence was entered
-unsigned long receive_historyTime = 0;          // previous time the sequence was entered
+unsigned long receiveTime = 0;                     // last time the sequence was entered
+unsigned long receive_historyTime = 0;             // previous time the sequence was entered
 unsigned long receiveDelay = 50;                // delay between receive PID
 
 // MCP2515 mask and filter configuration
@@ -92,7 +92,7 @@ unsigned long filt[12] =
 int boostpressurePin = A0;                      // select the input pin for the potentiometer
 int boostpressureValue = 0;                     // store the value coming from the sensor
 float boostpressure_filterAlpha = 0.1;          // initialize Exponential Moving Average (EMA) alpha, low alpha is slow/more filter and high alpha is fast/less filter
-float boostpressure_filterValue = 0;            // initialize EMA S filtered value
+float boostpressure_filterValue = 0;              // initialize EMA S filtered value
 float boostpressure_voltage = 0;                // store voltage
 float boostpressure_psi = 0;                    // convert to psi using manufacturer transfer function
 int boostpressureScaled = 0;                    // scaled boost for display inpus
@@ -104,8 +104,8 @@ float absbaro_pressure_kpa = 101.325;           // sea level
 
 // obdii map pressure sensor data
 unsigned int map_pressure_raw = 0;
-float map_pressure_filterAlpha = 0.1;           // initialize Exponential Moving Average (EMA) alpha, low alpha is slow/more filter and high alpha is fast/less filter
-float map_pressure_filterValue = 0;             // initialize EMA S filtered value
+float map_pressure_filterAlpha = 0.1;          // initialize Exponential Moving Average (EMA) alpha, low alpha is slow/more filter and high alpha is fast/less filter
+float map_pressure_filterValue = 0;              // initialize EMA S filtered value
 float map_pressure_kpa = 0;
 float mapboost_pressure_kpa = 0;
 float mapboost_pressure_psi = 0;                // boost pressure calculated from map
@@ -115,7 +115,7 @@ int mapboostpressureHistory = 0;                // store previous data
 // obdii fuel pressure sensor data
 unsigned int fuel_pressure_raw = 0;
 float fuel_pressure_filterAlpha = 0.1;          // initialize Exponential Moving Average (EMA) alpha, low alpha is slow/more filter and high alpha is fast/less filter
-float fuel_pressure_filterValue = 0;            // initialize EMA S filtered value
+float fuel_pressure_filterValue = 0;              // initialize EMA S filtered value
 float fuel_pressure_kpa = 0;
 float fuel_pressure_psi = 0;
 int fuelpressureScaled = 0;                     // scaled fuel for display inpus
@@ -123,46 +123,46 @@ int fuelpressureHistory = 0;                    // store previous data
 
 // obdii oil pressure sensor data
 unsigned int oil_pressure_raw = 0;
-float oil_pressure_filterAlpha = 0.1;           // initialize Exponential Moving Average (EMA) alpha, low alpha is slow/more filter and high alpha is fast/less filter
-float oil_pressure_filterValue = 0;             // initialize EMA S filtered value
+float oil_pressure_filterAlpha = 0.1;          // initialize Exponential Moving Average (EMA) alpha, low alpha is slow/more filter and high alpha is fast/less filter
+float oil_pressure_filterValue = 0;              // initialize EMA S filtered value
 float oil_pressure_kpa = 0;
 float oil_pressure_psi = 0;
-int oilpressureScaled = 0;                      // scaled fuel for display inpus
-int oilpressureHistory = 0;                     // store previous data
+int oilpressureScaled = 0;                     // scaled fuel for display inpus
+int oilpressureHistory = 0;                    // store previous data
 
 // general
-float rampMultiplier= 0.5;                      // multiplier to adjust ramp speed
-int initialboostRead = 0;                       // store first gauge read
-int initialfuelRead = 0;                        // store first gauge read
-int initialoilRead = 0;                         // store first gauge read
-int testToggle = 0;                             // test data toggle
-int boostsensorType = 1;                        // 0 = analog and 1 = map calculated
+float rampMultiplier= 0.5;                     // multiplier to adjust ramp speed
+int initialboostRead = 0;                      // store first gauge read
+int initialfuelRead = 0;                       // store first gauge read
+int initialoilRead = 0;                        // store first gauge read
+int testToggle = 0;                            // test data toggle
+int boostsensorType = 1;                       // 0 = analog and 1 = map calculated
 
 // bezel button
-int buttonPin = 3;                              // pushbutton connected to digital pin 3
-int buttonValue = HIGH;                         // store the value coming from the button
-int buttonHistory = HIGH;                       // store the previous button value
-int contrastHistory = 15;                       // store the previous contrast level
-int contrastDirection = -1;                     // store contrast direction where dim = -1 and bright = 1
-unsigned long buttonTime = 0;                   // last time the output pin was toggled
-unsigned long debounceDelay = 50;               // debounce time
-int contrastHistoryaddr = 0;                    // eeprom address
+int buttonPin = 3;                             // pushbutton connected to digital pin 3
+int buttonValue = HIGH;                        // store the value coming from the button
+int buttonHistory = HIGH;                      // store the previous button value
+int contrastHistory = 15;                      // store the previous contrast level
+int contrastDirection = -1;                    // store contrast direction where dim = -1 and bright = 1
+unsigned long buttonTime = 0;                  // last time the output pin was toggled
+unsigned long debounceDelay = 50;              // debounce time
+int contrastHistoryaddr = 0;                   // eeprom address
 
 // fast sequence
-unsigned long fastTime = 0;                     // last time the sequence was entered
-unsigned long fast_historyTime = 0;             // previous time the sequence was entered
+unsigned long fastTime = 0;                    // last time the sequence was entered
+unsigned long fast_historyTime = 0;            // previous time the sequence was entered
 unsigned long fastDelay = 10;                   // delay between entries
 
 // slow sequence
-unsigned long slowTime = 0;                     // last time the sequence was entered
-unsigned long slow_historyTime = 0;             // previous time the sequence was entered
-unsigned long slowDelay = 200;                  // delay between entries
+unsigned long slowTime = 0;                    // last time the sequence was entered
+unsigned long slow_historyTime = 0;            // previous time the sequence was entered
+unsigned long slowDelay = 200;                 // delay between entries
 
 // *********************************************** //
 
 void set_mask_filt()
 {
-    // set mask
+    /* set mask */
     if(can.setMask(mask)) {
        //Serial.println("set mask ok");
     }
@@ -170,7 +170,7 @@ void set_mask_filt()
        //Serial.println("set mask fail");
     }
 
-    // set filter
+    /* set filter, we can receive id from 0x04 ~ 0x09 */
     if(can.setFilt(filt)) {
        //Serial.println("set filt ok");
     }
@@ -181,12 +181,13 @@ void set_mask_filt()
 
 void setup()
 {
-  // start serial debug
-  //Serial.begin(9600);  // serial debug window
 
-  // ********** setup and start can bus ********** //
+// start serial debug
+ //Serial.begin(9600);  // serial debug window
+
+// ********** setup and start can bus ********** //
   can.begin(can_tx, can_rx, 57600);      // 9600 does not work
-  //Serial.println("initialize can bus");
+ //Serial.println("initialize can bus");
   // set baudrate of CAN Bus to 500Kb/s
   //if(can.canRate(CAN_RATE_500)) {
   //    Serial.println("set can rate ok");
@@ -196,19 +197,19 @@ void setup()
   //}
 
   set_mask_filt();
-  //Serial.println("can bus ready");
-  // ********************************************* //
+ //Serial.println("can bus ready");
+// ********************************************* //
 
-  // ********** setup and start displays ********** //
-  pinMode(boostpressure_resetPin, OUTPUT);          // Display reset pin, reset Display simuating open collector or ground/open output, gnd
-  pinMode(fuelpressure_resetPin, OUTPUT);           // Display reset pin, reset Display simuating open collector or ground/open output, gnd
-  pinMode(oilpressure_resetPin, OUTPUT);            // Display reset pin, reset Display simuating open collector or ground/open output, gnd
-  delay(100);                                       // wait for it to be recognised
-  pinMode(boostpressure_resetPin, INPUT);           // Display reset pin, reset Display simuating open collector or open/ground output, high impedance                                    // wait for it to be recognised
-  pinMode(fuelpressure_resetPin, INPUT);            // Display reset pin, reset Display simuating open collector or open/ground output, high impedance
-  pinMode(oilpressure_resetPin, INPUT);             // Display reset pin, reset Display simuating open collector or open/ground output, high impedance
+// ********** setup and start displays ********** //
+    pinMode(boostpressure_resetPin, OUTPUT);        // Display reset pin, reset Display simuating open collector or ground/open output, gnd
+    pinMode(fuelpressure_resetPin, OUTPUT);         // Display reset pin, reset Display simuating open collector or ground/open output, gnd
+    pinMode(oilpressure_resetPin, OUTPUT);          // Display reset pin, reset Display simuating open collector or ground/open output, gnd
+    delay(100);                                     // wait for it to be recognised
+    pinMode(boostpressure_resetPin, INPUT);         // Display reset pin, reset Display simuating open collector or open/ground output, high impedance                                    // wait for it to be recognised
+    pinMode(fuelpressure_resetPin, INPUT);          // Display reset pin, reset Display simuating open collector or open/ground output, high impedance
+    pinMode(oilpressure_resetPin, INPUT);           // Display reset pin, reset Display simuating open collector or open/ground output, high impedance
 
-  delay(2000) ;                                     // give display time to startup (This is important)
+    delay(2000) ;                                   // give display time to startup (This is important)
 
   // now start display as Serial lines should have 'stabilised'
   // boost pressure display
@@ -287,6 +288,7 @@ void setup()
 
   // initialize gpio
   pinMode(buttonPin, INPUT_PULLUP);    // sets the digital pin as input
+
 }
 
 void sendPID(unsigned char __bits, unsigned char __service, unsigned char __pid_c, unsigned char __pid_b, unsigned char __pid_a)
@@ -308,17 +310,17 @@ void receivePID(unsigned char (& receive_buffer)[8])
    //Serial.print("receive");
     if(can.recv(&id, receive_buffer))                // check if get data
     {
-       Serial.print("Get Data From id: 0x");
-       Serial.println(id, HEX);
+       //Serial.print("Get Data From id: 0x");
+       //Serial.println(id, HEX);
         for(int i = 0; i < 8; i++)          // print the data
         {
-           Serial.print("0x");
-           Serial.print(receive_buffer[i], HEX);
-           Serial.print("\t");
+           //Serial.print("0x");
+           //Serial.print(receive_buffer[i], HEX);
+           //Serial.print("\t");
            //Serial.print(receive_buffer[i], DEC);
            //Serial.print("\t");
         }
-       Serial.println();
+       //Serial.println();
     }
     /*
     // send test data
@@ -348,7 +350,7 @@ void receivePID(unsigned char (& receive_buffer)[8])
 
 void loop()
 {
-  // ********** start of fast sequence ********** //
+  // ********** start the fast sequence ********** //
   fastTime = millis();  // record time sequence is entered, this is used to delay read frequency
   if(fastTime - fast_historyTime > fastDelay) {
     // save the last time the sensor was read
@@ -374,7 +376,6 @@ void loop()
     // ********************************************************* //
 
     // ********** can and obdii operation ********** //
-    // ********** send request ********** //
       if (getPID == 0) {
         sendTime = millis();  // record time sequence is entered, this is used to delay read frequency
         if(sendTime - send_historyTime > sendDelay) {
@@ -391,8 +392,7 @@ void loop()
           getPID = 1;
         }
       }
-      // ********************************************************* //
-      // ********** receive request ********** //
+
       if (getPID == 1) {
         receiveTime = millis();  // record time sequence is entered, this is used to delay read frequency
         if(receiveTime - receive_historyTime > receiveDelay) {
@@ -472,15 +472,15 @@ void loop()
         getPID = 0;
       }
 
-    // force data to be correct boost gauge type, analog or calculated from map
+    // force data to be correct boost gauge type
     if (boostsensorType == 1) {
       boostpressureScaled = mapboostpressureScaled;
     }
-    // ********** ramp gauges ********** //
+
     // initial ramp boost gauge
     if (initialboostRead == 0 and boostpressureScaled > 0) {
       initialboostRead = 1;
-      for (boostpressureHistory = 1; boostpressureHistory < boostpressureScaled; boostpressureHistory = boostpressureHistory + round((boostpressureScaled - boostpressureHistory) * rampMultiplier)) {
+      for (boostpressureHistory = 1; boostpressureHistory < boostpressureScaled; boostpressureHistory = boostpressureHistory + round((float(boostpressureScaled) - float(boostpressureHistory)) * rampMultiplier)) {
         boostpressureDisplay.media_VideoFrame(0, 0, boostpressureHistory) ;
         }
       }
@@ -488,7 +488,7 @@ void loop()
     // initial ramp fuel gauge
     if (initialfuelRead == 0 and fuelpressureScaled > 0) {
       initialfuelRead = 1;
-      for (fuelpressureHistory = 1; fuelpressureHistory < fuelpressureScaled; fuelpressureHistory = fuelpressureHistory + round((fuelpressureScaled - fuelpressureHistory) * rampMultiplier)) {
+      for (fuelpressureHistory = 1; fuelpressureHistory < fuelpressureScaled; fuelpressureHistory = fuelpressureHistory + round((float(fuelpressureScaled) - float(fuelpressureHistory)) * rampMultiplier)) {
         fuelpressureDisplay.media_VideoFrame(0, 0, fuelpressureHistory) ;
         }
       }
@@ -496,25 +496,34 @@ void loop()
     // initial ramp oil gauge
     if (initialoilRead == 0 and oilpressureScaled > 0) {
       initialoilRead = 1;
-      for (oilpressureHistory = 1; oilpressureHistory < oilpressureScaled; oilpressureHistory = oilpressureHistory + round((oilpressureScaled - oilpressureHistory) * rampMultiplier)) {
+      for (oilpressureHistory = 1; oilpressureHistory < oilpressureScaled; oilpressureHistory = oilpressureHistory + round((float(oilpressureScaled) - float(oilpressureHistory)) * rampMultiplier)) {
         oilpressureDisplay.media_VideoFrame(0, 0, oilpressureHistory) ;
         }
       }
-    // ********************************************************* //
-    // ********** update gauges ********** //
+
+    // update all gauges
     if (initialboostRead == 1) {
       // smooth transition boost gauge
-      boostpressureHistory = round((boostpressure_filterAlpha * float(boostpressureScaled)) + ((1 - boostpressure_filterAlpha) * boostpressureHistory));
+      boostpressureHistory = round((boostpressure_filterAlpha * float(boostpressureScaled)) + ((1 - boostpressure_filterAlpha) * float(boostpressureHistory)));
+      if (boostpressureHistory <= 5 and boostpressureHistory > 0) {
+        boostpressureHistory = boostpressureHistory - 1;
+        }
       boostpressureDisplay.media_VideoFrame(0, 0, boostpressureHistory);
       }
     if (initialfuelRead == 1) {
       // smooth transition fuel gauge
-      fuelpressureHistory = round((fuel_pressure_filterAlpha * float(fuelpressureScaled)) + ((1 - fuel_pressure_filterAlpha) * fuelpressureHistory));
+      fuelpressureHistory = round((fuel_pressure_filterAlpha * float(fuelpressureScaled)) + ((1 - fuel_pressure_filterAlpha) * float(fuelpressureHistory)));
+      if (fuelpressureHistory <= 5 and fuelpressureHistory > 0) {
+        fuelpressureHistory = fuelpressureHistory - 1;
+        }
       fuelpressureDisplay.media_VideoFrame(0, 0, fuelpressureHistory) ;
       }
     if (initialoilRead == 1) {
       // smooth transition oil gauge
-      oilpressureHistory = round((oil_pressure_filterAlpha * float(oilpressureScaled)) + ((1 - oil_pressure_filterAlpha) * oilpressureHistory));
+      oilpressureHistory = round((oil_pressure_filterAlpha * float(oilpressureScaled)) + ((1 - oil_pressure_filterAlpha) * float(oilpressureHistory)));
+      if (oilpressureHistory <= 5 and oilpressureHistory > 0) {
+        oilpressureHistory = oilpressureHistory - 1;
+        }
       oilpressureDisplay.media_VideoFrame(0, 0, oilpressureHistory) ;
     }
     // ********************************************* //
@@ -522,7 +531,7 @@ void loop()
   }
   // ********** end of fast sequence ********** //
 
-  // ********** start of slow sequence ********** //
+  // ********** start the slow sequence ********** //
   slowTime = millis();  // record time sequence is entered, this is used to delay read frequency
   if(slowTime - slow_historyTime > slowDelay) {
     // save the last time the sensor was read
