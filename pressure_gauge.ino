@@ -415,7 +415,7 @@ void loop()
             mapboost_pressure_kpa = float(map_pressure_kpa) - float(absbaro_pressure_kpa);
             mapboost_pressure_psi = mapboost_pressure_kpa/6.8947572932;
             // scale sensor value to gauge
-            mapboostpressureScaled = round(float(mapboost_pressure_psi) / (8.0/234.0));  // analog range is 0 to 8, gauge range is 800 degrees
+            mapboostpressureScaled = round(float(mapboost_pressure_psi) / (8.0/234.0));  // analog range is 0 to 8, gauge range is 234 increments
             if (mapboostpressureScaled > 234) {
               mapboostpressureScaled = 234;
             }
@@ -441,7 +441,7 @@ void loop()
             fuel_pressure_kpa = float(fuel_pressure_raw) * 3.0;
             fuel_pressure_psi = fuel_pressure_kpa/6.8947572932;
             // scale sensor value to gauge
-            fuelpressureScaled = round(float(fuel_pressure_psi) * 10.0);  // analog range is 0 to 80, gauge range is 800 degrees
+            fuelpressureScaled = round(float(fuel_pressure_psi) * 10.0);  // analog range is 0 to 80, gauge range is 800 increments
             if (fuelpressureScaled > 800) {
               fuelpressureScaled = 800;
             }
@@ -457,7 +457,7 @@ void loop()
             //oil_pressure_filterValue = (oil_pressure_filterAlpha * float(oil_pressure_raw)) + ((1 - oil_pressure_filterAlpha) * oil_pressure_filterValue);
             oil_pressure_psi = float(oil_pressure_raw) * 0.578;
             // scale sensor value to gauge
-            oilpressureScaled = round(float(oil_pressure_psi) * 10.0);  // analog range is 0 to 80, gauge range is 800 degrees
+            oilpressureScaled = round(float(oil_pressure_psi) * 10.0);  // analog range is 0 to 80, gauge range is 800 increments
             if (oilpressureScaled > 800) {
               oilpressureScaled = 800;
               }
