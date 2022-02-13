@@ -1,7 +1,7 @@
 // ***************************************** //
 // 2017 Chevrolet SS Sedan Gauge Cluster
-// Revision A
-// December 6, 2021
+// Revision B
+// February 13, 2022
 // ***************************************** //
 
 #include <EEPROM.h>
@@ -504,27 +504,18 @@ void loop()
     // update all gauges
     if (initialboostRead == 1) {
       // smooth transition boost gauge
-      boostpressureHistory = round((boostpressure_filterAlpha * float(boostpressureScaled)) + ((1 - boostpressure_filterAlpha) * float(boostpressureHistory)));
-      if (boostpressureHistory <= 5 and boostpressureHistory > 0) {
-        boostpressureHistory = boostpressureHistory - 1;
-        }
-      boostpressureDisplay.media_VideoFrame(0, 0, boostpressureHistory);
+      boostpressureHistory = (boostpressure_filterAlpha * float(boostpressureScaled)) + ((1 - boostpressure_filterAlpha) * float(boostpressureHistory));
+      boostpressureDisplay.media_VideoFrame(0, 0, round(boostpressureHistory));
       }
     if (initialfuelRead == 1) {
       // smooth transition fuel gauge
-      fuelpressureHistory = round((fuel_pressure_filterAlpha * float(fuelpressureScaled)) + ((1 - fuel_pressure_filterAlpha) * float(fuelpressureHistory)));
-      if (fuelpressureHistory <= 5 and fuelpressureHistory > 0) {
-        fuelpressureHistory = fuelpressureHistory - 1;
-        }
-      fuelpressureDisplay.media_VideoFrame(0, 0, fuelpressureHistory) ;
+      fuelpressureHistory = (fuel_pressure_filterAlpha * float(fuelpressureScaled)) + ((1 - fuel_pressure_filterAlpha) * float(fuelpressureHistory));
+      fuelpressureDisplay.media_VideoFrame(0, 0, round(fuelpressureHistory)) ;
       }
     if (initialoilRead == 1) {
       // smooth transition oil gauge
-      oilpressureHistory = round((oil_pressure_filterAlpha * float(oilpressureScaled)) + ((1 - oil_pressure_filterAlpha) * float(oilpressureHistory)));
-      if (oilpressureHistory <= 5 and oilpressureHistory > 0) {
-        oilpressureHistory = oilpressureHistory - 1;
-        }
-      oilpressureDisplay.media_VideoFrame(0, 0, oilpressureHistory) ;
+      oilpressureHistory = (oil_pressure_filterAlpha * float(oilpressureScaled)) + ((1 - oil_pressure_filterAlpha) * float(oilpressureHistory));
+      oilpressureDisplay.media_VideoFrame(0, 0, round(oilpressureHistory)) ;
     }
     // ********************************************* //
 
